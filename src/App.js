@@ -1,27 +1,59 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {AppUI} from './AppUI';
+import store from './store';
+import { 
+  getChangeInputValue,
+  getAddTodoItemAction,
+  getDelItemAction,
+  getInitList
+} from './store/actionCreators';
+
+
 
 class App extends Component {
+  constructor(props){
+    super(props);
+    this.state=store.getState();
+    this.handleInputChange=this.handleInputChange.bind(this);
+    this.handleStoreChange = this.handleStoreChange.bind(this);
+    this.handleBtnClick = this.handleBtnClick.bind(this);
+    this.handleDelItem=this.handleDelItem.bind(this);
+    store.subscribe(this.handleStoreChange);
+  }
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <AppUI 
+        inputValue = {this.state.inputValue}
+        handleInputChange = {this.handleInputChange}
+        handleBtnClick = {this.handleBtnClick}
+        handleDelItem = {this.handleDelItem}
+        list = {this.state.list}
+      />
     );
+  }
+
+  componentDidMount(){
+    const action = getInitList();
+    store.dispatch(action);
+  }
+
+  handleInputChange(e){
+    const action = getChangeInputValue(e.target.value);
+    store.dispatch(action);
+  }
+
+  handleStoreChange(){
+    this.setState(store.getState());
+  }
+
+  handleBtnClick(){
+    const action = getAddTodoItemAction();
+    store.dispatch(action);
+  }
+
+  handleDelItem(index){
+    const action = getDelItemAction(index);
+    store.dispatch(action);
   }
 }
 
