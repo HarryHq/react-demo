@@ -1,7 +1,7 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## 关于这个项
+## 关于这个
 这个项目跟todolist实现的功能是一样的，唯一不一样的就是中间件用的是 redux-saga
 
 ## Available Scripts
